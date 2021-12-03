@@ -1,3 +1,3 @@
-from report import main
+from .report import main
 
 main()

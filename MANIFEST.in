@@ -1,4 +1,4 @@
 include pyproject.toml
 include LICENSE
-recursive-include src *.txt
-recursive-include src *.log
+recursive-include racers_report *.txt
+recursive-include racers_report *.log
