@@ -61,7 +61,7 @@ def get_time_info(time_file) -> dict:
     return time_info
 
 
-def build_report(start_time_file, end_time_file, abbr_info, driver, reverse) -> dict:
+def build_report(start_time_file, end_time_file, abbr_info, reverse, driver=None) -> dict:
     """
     Creates a report regarding the best lap time of each racer
 
@@ -77,7 +77,7 @@ def build_report(start_time_file, end_time_file, abbr_info, driver, reverse) -> 
     best_lap_time = {}
 
     for abbr in end_time_info:
-        best_lap_time[abbr_info[abbr][0]] = [abbr, end_time_info[abbr] - start_time_info[abbr]]
+        best_lap_time[abbr_info[abbr][0]] = [abbr, str(end_time_info[abbr] - start_time_info[abbr])[:-3]]
 
     best_lap_time = {k: v for k, v in sorted(best_lap_time.items(), key=lambda item: item[1][1])}
 
@@ -144,8 +144,7 @@ def check_files(path: str, *args) -> list:
     return checked
 
 
-def main():
-    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+def main_static():
     file_names = ['start.log', 'end.log', 'abbreviations.txt']
     colorama.init(autoreset=True)
     args = create_parser().parse_args()
@@ -154,14 +153,25 @@ def main():
     if args.files:
         start_file, end_file, abbr_file = check_files(args.files, *file_names)
     else:
-        start_file = pkg_resources.resource_string(__name__, "data/start.log")
-        end_file = pkg_resources.resource_string(__name__, "data/start.log")
-        abbr_file = pkg_resources.resource_string(__name__, "data/abbreviations.txt")
+        start_file = pkg_resources.resource_filename(__name__, "data/start.log")
+        end_file = pkg_resources.resource_filename(__name__, "data/end.log")
+        abbr_file = pkg_resources.resource_filename(__name__, "data/abbreviations.txt")
 
     abbreviations = create_abbr_dict(abbr_file)
     report = build_report(start_file, end_file, abbreviations, driver=args.driver, reverse=order)
     print_report(report, abbreviations)
 
 
+def main(order=None):
+    start_file = pkg_resources.resource_filename(__name__, "data/start.log")
+    end_file = pkg_resources.resource_filename(__name__, "data/end.log")
+    abbr_file = pkg_resources.resource_filename(__name__, "data/abbreviations.txt")
+    abbreviations = create_abbr_dict(abbr_file)
+
+    report = build_report(start_file, end_file, abbreviations, reverse=order)
+
+    return report, abbreviations
+
+
 if __name__ == '__main__':
-    main()
+    main_static()

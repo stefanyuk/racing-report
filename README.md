@@ -13,13 +13,13 @@ returns the result.
 
 ## How to install
 
-> pip install -i https://test.pypi.org/simple/ racers-report==1.0.2
+> pip install f1-racers-report==1.0.8
 
 ## How to fill key files
 You need to provide a path to directory where your 'start.log', 'end.log' and 'abbreviations.txt' 
 files are located.
 
-- 'stand.log' file where start time of the lap for each racer is located
+- 'start.log' file where start time of the lap for each racer is located
 - 'end.log' file where end time of the lap for each racer is located
 - 'abbreviations.txt' file with abbreviations explanations are located
 
